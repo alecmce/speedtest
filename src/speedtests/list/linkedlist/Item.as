@@ -6,5 +6,10 @@ package speedtests.list.linkedlist
         public var next:Item;
 
         public var data:*;
+
+        public function Item(data:* = null)
+        {
+            this.data = data;
+        }
     }
 }

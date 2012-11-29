@@ -1,0 +1,46 @@
+package speedtests.theories.eg
+{
+    public class ObjectIntHash implements IntHashStructure
+    {
+        private const COUNT:int = 100;
+
+        private var hash:Object = {};
+        private var object:Object = {};
+
+        public function before():void
+        {
+            for (var i:int = 0; i < COUNT; i++)
+                hash[i] = object;
+        }
+
+        public function get():void
+        {
+            for (var i:int = 0; i < COUNT; i++)
+                var object:Object = hash[i];
+        }
+
+        public function set():void
+        {
+            for (var i:int = 0; i < COUNT; i++)
+                hash[i] = object;
+        }
+
+        public function clear():void
+        {
+            for (var i:int = 0; i < COUNT; i++)
+                delete hash[i];
+        }
+
+        public function iterateValues():void
+        {
+            for each (var object:Object in hash)
+                var value:Object = object;
+        }
+
+        public function iterateKeys():void
+        {
+            for (var string:String in hash)
+                var key:int = int(string);
+        }
+    }
+}

@@ -22,11 +22,11 @@ package speedtests.list.theories
             const shift:MethodToken = new MethodToken("shift", shift);
 
             return new MethodSpeedometer()
-                    .addToken(append)
-                    .addToken(iterateAll)
-                    .addToken(pop)
-                    .addToken(prefix)
-                    .addToken(shift);
+                    .addMethod(append)
+                    .addMethod(iterateAll)
+                    .addMethod(pop)
+                    .addMethod(prefix)
+                    .addMethod(shift);
         }
     }
 }

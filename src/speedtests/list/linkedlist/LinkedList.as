@@ -58,5 +58,11 @@ package speedtests.list.linkedlist
         {
             return new ItemIterator(head);
         }
+
+        public function clear():void
+        {
+            head = null;
+            tail = null;
+        }
     }
 }

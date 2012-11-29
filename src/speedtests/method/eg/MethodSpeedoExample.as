@@ -23,9 +23,9 @@ package speedtests.method.eg
 
             const speedo:MethodSpeedometer = new MethodSpeedometer();
             speedo.setCount(ITERATIONS)
-                  .addToken(loopThroughVector)
-                  .addToken(loopThroughArray)
-                  .addToken(loopThroughList)
+                  .addMethod(loopThroughVector)
+                  .addMethod(loopThroughArray)
+                  .addMethod(loopThroughList)
                   .result.add(onResult);
 
             return speedo;
@@ -46,8 +46,9 @@ package speedtests.method.eg
             output.appendText(token.toString() + "\n");
         }
 
-        private function onReady():void
+        public function start():void
         {
+            speedo.reset();
             if (speedo.hasNext())
                 addEventListener(Event.ENTER_FRAME, onEnterFrame);
         }
@@ -58,7 +59,6 @@ package speedtests.method.eg
             if (!speedo.hasNext())
                 removeEventListener(Event.ENTER_FRAME, onEnterFrame);
         }
-
     }
 }
 

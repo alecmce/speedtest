@@ -75,7 +75,7 @@ package speedtests.list
                     .setCount(count);
 
             for each (var method:MethodToken in current.methods)
-                methods.addToken(method);
+                methods.addMethod(method);
         }
 
         private function onResult(token:MethodToken):void

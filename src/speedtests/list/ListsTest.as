@@ -1,7 +1,6 @@
 package speedtests.list
 {
     import speedtests.list.theories.ArrayListTheory;
-    import speedtests.method.MethodToken;
 
     public class ListsTest
     {

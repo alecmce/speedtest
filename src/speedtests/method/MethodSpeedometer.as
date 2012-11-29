@@ -7,8 +7,9 @@ package speedtests.method
     public class MethodSpeedometer
     {
         public const result:Signal = new Signal(MethodToken);
-        private const list:MethodTokenList = new MethodTokenList();
 
+        private const list:MethodTokenList = new MethodTokenList();
+        private var before:Function;
         private var count:int;
         private var current:MethodToken;
 
@@ -18,20 +19,29 @@ package speedtests.method
             return this;
         }
 
-        public function setToken(tokens:Vector.<MethodToken>):MethodSpeedometer
+        public function setBefore(before:Function):MethodSpeedometer
         {
-            list.clear();
-            for each (var token:MethodToken in tokens)
-                list.add(token);
-
+            this.before = before;
             return this;
         }
 
-        public function addToken(token:MethodToken):MethodSpeedometer
+        public function setMethods(tokens:Vector.<MethodToken>):MethodSpeedometer
+        {
+            list.clear();
+            addMethods(tokens);
+            return this;
+        }
+
+        private function addMethods(tokens:Vector.<MethodToken>):void
+        {
+            for each (var token:MethodToken in tokens)
+                addMethod(token);
+        }
+
+        public function addMethod(token:MethodToken):MethodSpeedometer
         {
             list.head || (current = token);
             list.add(token);
-            
             return this;
         }
 
@@ -61,6 +71,7 @@ package speedtests.method
 
         private function recordTimeForMethod():void
         {
+            before && before();
             var start:int = getTimer();
             repeatMethod(current.method);
             var end:int = getTimer();
@@ -69,7 +80,7 @@ package speedtests.method
 
         private function recordTime(method:MethodToken, start:int, end:int):void
         {
-            method.duration = end - start;
+            method.addResult(end - start);
             result.dispatch(method);
         }
 
