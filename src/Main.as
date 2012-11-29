@@ -2,8 +2,8 @@ package
 {
     import flash.display.Sprite;
 
-    import speedtests.method.eg.MethodSpeedoExample;
-    import speedtests.theories.eg.TheorySpeedoExample;
+    import alecmce.speedtests.method.eg.MethodSpeedoExample;
+    import alecmce.speedtests.theories.eg.TheorySpeedoExample;
 
     public class Main extends Sprite
     {
