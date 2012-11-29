@@ -4,24 +4,36 @@ package speedtests.method
 
     import org.osflash.signals.Signal;
 
+    import speedtests.list.linkedlist.Item;
+    import speedtests.list.linkedlist.LinkedList;
+    import speedtests.util.Progress;
+
     public class MethodSpeedometer
     {
+        public const progress:Progress = new Progress();
         public const result:Signal = new Signal(MethodToken);
 
-        private const list:MethodTokenList = new MethodTokenList();
+        private const list:LinkedList = new LinkedList();
+        private var current:Item;
         private var before:Function;
         private var count:int;
-        private var current:MethodToken;
+
+        private function updateProgress():void
+        {
+            progress.setTotal(count * list.count);
+        }
 
         public function setCount(count:int):MethodSpeedometer
         {
             this.count = count;
+            updateProgress();
             return this;
         }
 
         public function setBefore(before:Function):MethodSpeedometer
         {
             this.before = before;
+            updateProgress();
             return this;
         }
 
@@ -40,8 +52,10 @@ package speedtests.method
 
         public function addMethod(token:MethodToken):MethodSpeedometer
         {
-            list.head || (current = token);
-            list.add(token);
+            const item:Item = new Item(token);
+            list.head || (current = item);
+            list.append(item);
+            updateProgress();
             return this;
         }
 
@@ -53,7 +67,8 @@ package speedtests.method
         public function next():void
         {
             recordTimeForMethod();
-            current = current.next as MethodToken;
+            updateProgress();
+            current = current.next;
         }
 
         public function reset():MethodSpeedometer
@@ -71,11 +86,11 @@ package speedtests.method
 
         private function recordTimeForMethod():void
         {
-            before && before();
+            const token:MethodToken = current.data as MethodToken;
             var start:int = getTimer();
-            repeatMethod(current.method);
+            repeatMethod(token.method);
             var end:int = getTimer();
-            recordTime(current, start, end);
+            recordTime(token, start, end);
         }
 
         private function recordTime(method:MethodToken, start:int, end:int):void
@@ -87,7 +102,9 @@ package speedtests.method
         private function repeatMethod(method:Function):void
         {
             for (var i:int = 0; i < count; i++)
+            {
                 method();
+            }
         }
     }
 }

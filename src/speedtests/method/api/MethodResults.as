@@ -1,6 +1,6 @@
 package speedtests.method.api
 {
-    public interface MethodResult
+    public interface MethodResults
     {
         function add(duration:int):void;
 
@@ -9,5 +9,7 @@ package speedtests.method.api
         function getCount():int;
 
         function getMean():Number;
+
+        function getVariance():Number;
     }
 }

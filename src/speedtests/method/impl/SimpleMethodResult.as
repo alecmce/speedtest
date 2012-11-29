@@ -1,11 +1,11 @@
 package speedtests.method.impl
 {
-    import speedtests.method.api.MethodResult;
+    import speedtests.method.api.MethodResults;
 
-    public class SimpleMethodResult implements MethodResult
+    public class SimpleMethodResult implements MethodResults
     {
-        private var duration:int;
-        private var count:int;
+        private var duration:int = 0;
+        private var count:int = 0;
 
         public function add(duration:int):void
         {
@@ -25,7 +25,12 @@ package speedtests.method.impl
 
         public function getMean():Number
         {
-            return duration / count;
+            return count ? duration / count : 0;
+        }
+
+        public function getVariance():Number
+        {
+            return 0;
         }
     }
 }

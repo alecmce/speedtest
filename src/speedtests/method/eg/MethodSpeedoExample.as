@@ -17,9 +17,17 @@ package speedtests.method.eg
 
         private function makeSpeedometer():MethodSpeedometer
         {
-            const loopThroughVector:MethodToken = new MethodToken("loopThroughVector", iterators.loopThroughVector);
-            const loopThroughArray:MethodToken = new MethodToken("loopThroughArray", iterators.loopThroughArray);
-            const loopThroughList:MethodToken = new MethodToken("loopThroughLinkedList", iterators.loopThroughLinkedList);
+            const loopThroughVector:MethodToken = new MethodToken()
+                    .setMethod(iterators.loopThroughVector)
+                    .setName("loopThroughVector") as MethodToken;
+
+            const loopThroughArray:MethodToken = new MethodToken()
+                    .setMethod(iterators.loopThroughArray)
+                    .setName("loopThroughArray") as MethodToken;
+
+            const loopThroughList:MethodToken = new MethodToken()
+                    .setMethod(iterators.loopThroughLinkedList)
+                    .setName("loopThroughLinkedList") as MethodToken;
 
             const speedo:MethodSpeedometer = new MethodSpeedometer();
             speedo.setCount(ITERATIONS)

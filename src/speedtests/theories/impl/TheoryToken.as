@@ -6,12 +6,15 @@ package speedtests.theories.impl
 
     public class TheoryToken extends Token
     {
+        public const results:TheoryResults = new TheoryResults();
+
         private var theory:Theory;
 
-        public function TheoryToken(name:String, theory:Theory)
+        public function setTheory(theory:Theory):TheoryToken
         {
-            super(name);
             this.theory = theory;
+            results.setMethods(theory.getMethods());
+            return this;
         }
 
         public function getBefore():Function
@@ -26,41 +29,25 @@ package speedtests.theories.impl
 
             const list:Vector.<MethodToken> = new Vector.<MethodToken>(count, true);
             for (var i:int = 0; i < count; i++)
-                list[i] = data[i].token;
+                list[i] = data[i].method;
 
             return list;
         }
 
-        public function getDuration():int
+        public function getResults():TheoryResults
         {
-            const tokens:Vector.<WeightedMethodToken> = theory.getMethods();
-
-            var duration:Number = 0;
-            for each (var token:WeightedMethodToken in tokens)
-                duration += token.getProportionateDuration();
-
-            return int(duration);
+            return results;
         }
 
         public function toString():String
         {
             const tokens:Vector.<WeightedMethodToken> = theory.getMethods();
 
-            var lines:Array = [name + ": " + getDuration()];
+            var lines:Array = [name + ": " + results.getWeightedTotal()];
             for each (var token:WeightedMethodToken in tokens)
                 lines.push("\t" + token.toString());
 
             return lines.join("\n");
-        }
-
-        public function reset():TheoryToken
-        {
-            const tokens:Vector.<WeightedMethodToken> = theory.getMethods();
-
-            for each (var token:WeightedMethodToken in tokens)
-                token.reset();
-
-            return this;
         }
     }
 }

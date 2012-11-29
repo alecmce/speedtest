@@ -17,11 +17,19 @@ package speedtests.theories.impl
 
         public function addMethod(name:String, method:Function, weight:int):TheoryFactory
         {
-            var token:MethodToken = new MethodToken(name, method);
-            var weighted:WeightedMethodToken = new WeightedMethodToken(token);
-            methods.push(weighted);
+            methods.push(makeWeightedMethodToken(name, method));
             weights.push(weight);
             return this;
+        }
+
+        private function makeWeightedMethodToken(name:String, method:Function):WeightedMethodToken
+        {
+            const token:MethodToken = new MethodToken()
+                    .setMethod(method)
+                    .setName(name) as MethodToken;
+
+            return new WeightedMethodToken()
+                    .setMethod(token);
         }
 
         public function make():Theory

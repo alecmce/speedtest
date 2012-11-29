@@ -1,24 +1,34 @@
 package speedtests.method
 {
     import speedtests.Token;
-    import speedtests.method.api.MethodResult;
+    import speedtests.method.api.MethodResults;
     import speedtests.method.impl.SimpleMethodResult;
 
     public class MethodToken extends Token
     {
         public var method:Function;
-        private var results:MethodResult;
+        private var results:MethodResults = new SimpleMethodResult();
 
-        public function MethodToken(name:String, method:Function, results:MethodResult = null)
+        public function setMethod(method:Function):MethodToken
         {
-            super(name);
             this.method = method;
-            this.results = results || new SimpleMethodResult();
+            return this;
+        }
+
+        public function setResults(results:MethodResults):MethodToken
+        {
+            this.results = results;
+            return this;
         }
 
         public function addResult(duration:int):void
         {
             results.add(duration);
+        }
+
+        public function getResults():MethodResults
+        {
+            return results;
         }
 
         final public function toString():String

@@ -15,6 +15,7 @@ package speedtests.theories.eg
         private const theories:IntHashTheories = makeTheories();
         private const speedo:TheorySpeedometer = makeSpeedometer();
         private const output:TextField = makeTextField();
+        private const log:Array = [""];
 
         private function makeTheories():IntHashTheories
         {
@@ -29,9 +30,17 @@ package speedtests.theories.eg
 
         private function makeSpeedometer():TheorySpeedometer
         {
-            const dictionary:TheoryToken = new TheoryToken("dictionary", theories.getDictionaryTheory());
-            const vector:TheoryToken = new TheoryToken("vector", theories.getFixedVectorIntHash());
-            const object:TheoryToken = new TheoryToken("object", theories.getObjectTheory());
+            const dictionary:TheoryToken = new TheoryToken()
+                    .setTheory(theories.getDictionaryTheory())
+                    .setName("dictionary") as TheoryToken;
+
+            const vector:TheoryToken = new TheoryToken()
+                    .setTheory(theories.getFixedVectorIntHash())
+                    .setName("vector") as TheoryToken;
+
+            const object:TheoryToken = new TheoryToken()
+                    .setTheory(theories.getObjectTheory())
+                    .setName("object") as TheoryToken;
 
             const speedo:TheorySpeedometer = new TheorySpeedometer();
             speedo
@@ -57,7 +66,8 @@ package speedtests.theories.eg
 
         private function onResult(token:TheoryToken):void
         {
-            output.appendText(token.toString() + "\n");
+            log.push(token.toString(), "");
+            output.text = log.join("\n");
         }
 
         public function start():void
@@ -69,6 +79,9 @@ package speedtests.theories.eg
 
         private function onEnterFrame(event:Event):void
         {
+            log[log.length - 1] = int(speedo.progress.getProportion() * 10000);
+            output.text = log.join("\n");
+
             speedo.next();
             if (!speedo.hasNext())
                 removeEventListener(Event.ENTER_FRAME, onEnterFrame);

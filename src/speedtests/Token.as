@@ -7,9 +7,10 @@ package speedtests
 
         public var name:String;
 
-        public function Token(name:String)
+        public function setName(name:String):Token
         {
             this.name = name;
+            return this;
         }
     }
 }

@@ -1,59 +1,41 @@
 package speedtests.theories.impl
 {
-    import speedtests.list.linkedlist.Item;
-    import speedtests.list.linkedlist.LinkedList;
     import speedtests.method.MethodToken;
+    import speedtests.method.impl.WeightedResults;
 
     public class WeightedMethodToken
     {
-        private const results:LinkedList = new LinkedList();
+        private const results:WeightedResults = new WeightedResults();
 
         public var proportion:Number;
-        public var token:MethodToken;
+        public var method:MethodToken;
 
-        private var isCalculated:Boolean;
         private var duration:int;
-        private var proportionateDuration:Number;
 
-        public function WeightedMethodToken(token:MethodToken)
+        public function setMethod(method:MethodToken):WeightedMethodToken
         {
-            this.token = token;
-        }
-
-        public function addResult(duration:int):WeightedMethodToken
-        {
-            results.append(new Item(duration));
-            isCalculated = false;
+            this.method = method;
+            results.setResults(method.getResults());
             return this;
         }
 
-        public function getProportionateDuration():Number
+        public function setProportion(proportion:Number):WeightedMethodToken
         {
-            isCalculated || calculateProportiateDuration();
-            return proportionateDuration;
-        }
-
-        private function calculateProportiateDuration():void
-        {
-            duration = 0;
-            for (var item:Item = results.head; item; item = item.next)
-                duration += item.data;
-
-            proportionateDuration = duration * proportion;
-            isCalculated = true;
-        }
-
-        public function reset():WeightedMethodToken
-        {
-            results.clear();
+            this.proportion = proportion;
+            results.setProportion(proportion);
             return this;
+        }
+
+        public function getResults():WeightedResults
+        {
+            return results;
         }
 
         public function toString():String
         {
             return "{name}: {pDuration} ({duration} @ {proportion})"
-                .replace("{name}", token.name)
-                .replace("{pDuration}", getProportionateDuration())
+                .replace("{name}", method.name)
+                .replace("{pDuration}", results.getWeightedTotal())
                 .replace("{duration}", duration)
                 .replace("{proportion}", proportion);
         }

@@ -4,6 +4,7 @@ package speedtests.list.linkedlist
     {
         public var head:Item;
         public var tail:Item;
+        public var count:int = 0;
 
         public function append(item:Item):LinkedList
         {
@@ -18,10 +19,11 @@ package speedtests.list.linkedlist
                 head = tail = item;
             }
 
+            ++count;
             return this;
         }
 
-        public function prefix(item:Item):void
+        public function prefix(item:Item):LinkedList
         {
             if (head)
             {
@@ -33,6 +35,9 @@ package speedtests.list.linkedlist
             {
                 head = tail = item;
             }
+
+            ++count;
+            return this;
         }
 
         public function remove(item:Item):Item
@@ -41,6 +46,7 @@ package speedtests.list.linkedlist
             item.prev && (item.prev.next = item.next);
             head == item && (head = head.next);
             tail == item && (tail = tail.prev);
+            --count;
             return item;
         }
 
@@ -63,6 +69,7 @@ package speedtests.list.linkedlist
         {
             head = null;
             tail = null;
+            count = 0;
         }
     }
 }
