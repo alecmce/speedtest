@@ -1,11 +1,11 @@
 package alecmce.speedtests.theories.impl
 {
-    import org.osflash.signals.Signal;
-
     import alecmce.speedtests.list.linkedlist.Item;
     import alecmce.speedtests.list.linkedlist.LinkedList;
-    import alecmce.speedtests.method.MethodSpeedometer;
+    import alecmce.speedtests.method.impl.MethodSpeedometer;
     import alecmce.speedtests.util.Progress;
+
+    import org.osflash.signals.Signal;
 
     public class TheoryIterator
     {
@@ -23,13 +23,22 @@ package alecmce.speedtests.theories.impl
         private var current:TheoryToken;
         private var index:int;
 
-        public function TheoryIterator(list:LinkedList, theoryCount:int, methodCount:int)
+        public function setList(list:LinkedList):TheoryIterator
         {
             this.list = list;
-            this.theoryCount = theoryCount;
-            this.methodCount = methodCount;
+            return this;
+        }
 
-            reset();
+        public function setTheoryCount(theoryCount:int):TheoryIterator
+        {
+            this.theoryCount = theoryCount;
+            return this;
+        }
+
+        public function setMethodCount(methodCount:int):TheoryIterator
+        {
+            this.methodCount = methodCount;
+            return this;
         }
 
         public function updateProgressTotal():TheoryIterator
@@ -39,12 +48,11 @@ package alecmce.speedtests.theories.impl
             return this;
         }
 
-        public function reset():void
+        public function reset():TheoryIterator
         {
-            progress
-                .reset();
-
+            progress.reset();
             setCurrentTheory(list.head);
+            return this;
         }
 
         private function setCurrentTheory(item:Item):void
@@ -63,15 +71,14 @@ package alecmce.speedtests.theories.impl
 
         public function hasNext():Boolean
         {
-            return current && index < theoryCount;
+            return current && index < theoryCount && methods.hasNext();
         }
 
         public function next():void
         {
             progress.tick();
             methods.next();
-            if (!methods.hasNext())
-                resetMethodsOrGetNextTheory();
+            methods.hasNext() || resetMethodsOrGetNextTheory();
         }
 
         private function resetMethodsOrGetNextTheory():void

@@ -1,11 +1,11 @@
 package alecmce.speedtests.method.eg
 {
+    import alecmce.speedtests.method.impl.MethodSpeedometer;
+    import alecmce.speedtests.method.impl.MethodToken;
+
     import flash.display.Sprite;
     import flash.events.Event;
     import flash.text.TextField;
-
-    import alecmce.speedtests.method.MethodSpeedometer;
-    import alecmce.speedtests.method.MethodToken;
 
     public class MethodSpeedoExample extends Sprite
     {

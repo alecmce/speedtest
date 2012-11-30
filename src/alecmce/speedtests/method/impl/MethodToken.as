@@ -1,4 +1,4 @@
-package alecmce.speedtests.method
+package alecmce.speedtests.method.impl
 {
     import alecmce.speedtests.Token;
     import alecmce.speedtests.method.api.MethodResults;

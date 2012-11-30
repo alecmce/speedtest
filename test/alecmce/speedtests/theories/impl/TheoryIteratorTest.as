@@ -1,10 +1,10 @@
 package alecmce.speedtests.theories.impl
 {
-    import org.hamcrest.assertThat;
-    import org.hamcrest.object.equalTo;
-
     import alecmce.speedtests.list.linkedlist.Item;
     import alecmce.speedtests.list.linkedlist.LinkedList;
+
+    import org.hamcrest.assertThat;
+    import org.hamcrest.object.equalTo;
 
     public class TheoryIteratorTest
     {
@@ -18,8 +18,17 @@ package alecmce.speedtests.theories.impl
         public function theCorrectNumberOfIterationsArePerformed():void
         {
             const list:LinkedList = makeTheoryList(TOKEN_COUNT);
-            iterator = new TheoryIterator(list, THEORY_ITERATIONS, METHOD_ITERATIONS);
+            iterator = makeIterator(list);
             assertThat(iterationsCount(iterator), equalTo(TOKEN_COUNT * METHOD_ITERATIONS * THEORY_ITERATIONS));
+        }
+
+        private function makeIterator(list:LinkedList):TheoryIterator
+        {
+            return new TheoryIterator()
+                .setList(list)
+                .setTheoryCount(THEORY_ITERATIONS)
+                .setMethodCount(METHOD_ITERATIONS)
+                .reset();
         }
 
         private function makeTheoryList(count:int):LinkedList
@@ -51,7 +60,7 @@ package alecmce.speedtests.theories.impl
     }
 }
 
-import alecmce.speedtests.method.MethodToken;
+import alecmce.speedtests.method.impl.MethodToken;
 import alecmce.speedtests.theories.api.Theory;
 import alecmce.speedtests.theories.impl.WeightedMethodToken;
 

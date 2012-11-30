@@ -1,9 +1,9 @@
 package alecmce.speedtests.theories.impl
 {
+    import alecmce.speedtests.method.impl.MethodToken;
+
     import org.hamcrest.assertThat;
     import org.hamcrest.object.equalTo;
-
-    import alecmce.speedtests.method.MethodToken;
 
     public class WeightedMethodTokenTest
     {
