@@ -40,8 +40,11 @@ package alecmce.speedtests.method.impl
 
         public function reset():MethodIterator
         {
-            count = 0;
             setCurrentMethod(list.head);
+            progress
+                .setTotal(list.count)
+                .reset();
+
             return this;
         }
 
@@ -59,7 +62,7 @@ package alecmce.speedtests.method.impl
         public function next():void
         {
             recordTimeForMethod();
-            updateProgress();
+            progress.tick();
             setCurrentMethod(item.next);
         }
 
@@ -82,11 +85,6 @@ package alecmce.speedtests.method.impl
         {
             for (var i:int = 0; i < count; i++)
                 method();
-        }
-
-        private function updateProgress():void
-        {
-            progress.setTotal(++count * list.count);
         }
     }
 }

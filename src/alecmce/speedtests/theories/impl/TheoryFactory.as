@@ -1,6 +1,6 @@
 package alecmce.speedtests.theories.impl
 {
-    import alecmce.speedtests.method.MethodToken;
+    import alecmce.speedtests.method.impl.MethodToken;
     import alecmce.speedtests.theories.api.Theory;
 
     public class TheoryFactory

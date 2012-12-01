@@ -26,27 +26,30 @@ package alecmce.speedtests.theories.impl
         public function setList(list:LinkedList):TheoryIterator
         {
             this.list = list;
+            updateProgressTotal();
             return this;
         }
 
         public function setTheoryCount(theoryCount:int):TheoryIterator
         {
             this.theoryCount = theoryCount;
+            updateProgressTotal();
             return this;
         }
 
         public function setMethodCount(methodCount:int):TheoryIterator
         {
             this.methodCount = methodCount;
+            updateProgressTotal();
             return this;
         }
 
         public function updateProgressTotal():TheoryIterator
         {
-            const count:int = theoryCount * methodCount * list.count;
-            progress.setTotal(count);
+            progress.setTotal(theoryCount * methodCount * list.count);
             return this;
         }
+
 
         public function reset():TheoryIterator
         {
@@ -76,8 +79,8 @@ package alecmce.speedtests.theories.impl
 
         public function next():void
         {
-            progress.tick();
             methods.next();
+            progress.tick();
             methods.hasNext() || resetMethodsOrGetNextTheory();
         }
 

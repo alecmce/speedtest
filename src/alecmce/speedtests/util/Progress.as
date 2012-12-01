@@ -27,7 +27,7 @@ package alecmce.speedtests.util
 
         public function getProportion():Number
         {
-            return position / total;
+            return total ? position / total : 0;
         }
 
         public function getTotal():int

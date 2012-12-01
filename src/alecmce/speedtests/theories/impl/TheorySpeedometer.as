@@ -1,25 +1,34 @@
 package alecmce.speedtests.theories.impl
 {
-    import org.osflash.signals.Signal;
-
     import alecmce.speedtests.list.linkedlist.Item;
     import alecmce.speedtests.list.linkedlist.LinkedList;
-    import alecmce.speedtests.method.MethodSpeedometer;
+    import alecmce.speedtests.method.impl.MethodSpeedometer;
     import alecmce.speedtests.util.Progress;
+
+    import org.osflash.signals.Signal;
 
     public class TheorySpeedometer
     {
         public static const THEORY_COUNT:int = 100;
         public static const METHOD_COUNT:int = 1000;
 
-        private const methods:MethodSpeedometer = new MethodSpeedometer();
         private const list:LinkedList = new LinkedList();
-        private const iterator:TheoryIterator = new TheoryIterator(list, THEORY_COUNT, METHOD_COUNT);
+        private const iterator:TheoryIterator = makeIterator();
+        private const methods:MethodSpeedometer = new MethodSpeedometer();
+
         public const result:Signal = iterator.theoryComplete;
         public const progress:Progress = iterator.progress;
 
         private var current:Item;
         private var theory:TheoryToken;
+
+        private function makeIterator():TheoryIterator
+        {
+            return new TheoryIterator()
+                .setList(list)
+                .setTheoryCount(THEORY_COUNT)
+                .setMethodCount(METHOD_COUNT);
+        }
 
         public function setTheoryCount(theoryCount:int):TheorySpeedometer
         {

@@ -14,21 +14,43 @@ package alecmce.speedtests.theories.impl
         private static const METHOD_ITERATIONS:int = 3;
         private static const THEORY_ITERATIONS:int = 5;
 
-        [Test]
-        public function theCorrectNumberOfIterationsArePerformed():void
+        [Before]
+        public function before():void
         {
-            const list:LinkedList = makeTheoryList(TOKEN_COUNT);
-            iterator = makeIterator(list);
-            assertThat(iterationsCount(iterator), equalTo(TOKEN_COUNT * METHOD_ITERATIONS * THEORY_ITERATIONS));
-        }
-
-        private function makeIterator(list:LinkedList):TheoryIterator
-        {
-            return new TheoryIterator()
-                .setList(list)
+            iterator = new TheoryIterator()
+                .setList(makeTheoryList(TOKEN_COUNT))
                 .setTheoryCount(THEORY_ITERATIONS)
                 .setMethodCount(METHOD_ITERATIONS)
                 .reset();
+        }
+
+        [Test]
+        public function theCorrectNumberOfIterationsArePerformed():void
+        {
+            const total:int = TOKEN_COUNT * METHOD_ITERATIONS * THEORY_ITERATIONS;
+            assertThat(iterationsCount(iterator), equalTo(total));
+        }
+
+        [Test]
+        public function iteratorResetsTo0():void
+        {
+            assertThat(iterator.progress.getProportion(), equalTo(0));
+        }
+
+        [Test]
+        public function iteratorUpdatesProperly():void
+        {
+            const total:int = TOKEN_COUNT * METHOD_ITERATIONS * THEORY_ITERATIONS;
+            iterator.next();
+            assertThat(iterator.progress.getProportion(), equalTo(1 / total));
+        }
+
+        [Test]
+        public function iteratorCompletesAt1():void
+        {
+            while (iterator.hasNext())
+                iterator.next();
+            assertThat(iterator.progress.getProportion(), equalTo(1));
         }
 
         private function makeTheoryList(count:int):LinkedList
