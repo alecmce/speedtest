@@ -2,6 +2,7 @@ package alecmce.speedtests.method.eg
 {
     import alecmce.speedtests.method.impl.MethodSpeedometer;
     import alecmce.speedtests.method.impl.MethodToken;
+    import alecmce.speedtests.util.Progress;
 
     import flash.display.Sprite;
     import flash.events.Event;
@@ -14,6 +15,8 @@ package alecmce.speedtests.method.eg
         private const iterators:ListIterators = new ListIterators();
         private const speedo:MethodSpeedometer = makeSpeedometer();
         private const output:TextField = makeTextField();
+
+        public const progress:Progress = speedo.progress;
 
         private function makeSpeedometer():MethodSpeedometer
         {

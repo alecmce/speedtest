@@ -12,10 +12,10 @@ package alecmce.speedtests.method.impl
 
         private const list:LinkedList = new LinkedList();
         private var count:int = DEFAULT_COUNT;
-
         private const iterator:MethodIterator = makeIterator();
-        public const progress:Progress = iterator.progress;
+
         public const result:Signal = iterator.result;
+        public const progress:Progress = iterator.progress;
 
         private function makeIterator():MethodIterator
         {
@@ -43,17 +43,19 @@ package alecmce.speedtests.method.impl
             return this;
         }
 
-        private function addMethods(tokens:Vector.<MethodToken>):void
+        private function addMethods(tokens:Vector.<MethodToken>):MethodSpeedometer
         {
             for each (var token:MethodToken in tokens)
                 addMethod(token);
+
+            return this;
         }
 
         public function addMethod(token:MethodToken):MethodSpeedometer
         {
             const item:Item = new Item(token);
             list.append(item);
-            iterator.reset()
+            iterator.reset();
             return this;
         }
 

@@ -11,7 +11,7 @@ package alecmce.speedtests.theories.impl
         private var iterator:TheoryIterator;
 
         private static const TOKEN_COUNT:int = 2;
-        private static const METHOD_ITERATIONS:int = 3;
+        private static const METHOD_ITERATIONS:int = 7;
         private static const THEORY_ITERATIONS:int = 5;
 
         [Before]
@@ -27,7 +27,7 @@ package alecmce.speedtests.theories.impl
         [Test]
         public function theCorrectNumberOfIterationsArePerformed():void
         {
-            const total:int = TOKEN_COUNT * METHOD_ITERATIONS * THEORY_ITERATIONS;
+            const total:int = TOKEN_COUNT * ExampleTheory.COUNT * THEORY_ITERATIONS;
             assertThat(iterationsCount(iterator), equalTo(total));
         }
 
@@ -40,7 +40,7 @@ package alecmce.speedtests.theories.impl
         [Test]
         public function iteratorUpdatesProperly():void
         {
-            const total:int = TOKEN_COUNT * METHOD_ITERATIONS * THEORY_ITERATIONS;
+            const total:int = TOKEN_COUNT * ExampleTheory.COUNT * THEORY_ITERATIONS;
             iterator.next();
             assertThat(iterator.progress.getProportion(), equalTo(1 / total));
         }
@@ -88,17 +88,20 @@ import alecmce.speedtests.theories.impl.WeightedMethodToken;
 
 class ExampleTheory implements Theory
 {
+    public static const COUNT:int = 3;
+
     public var beforeCount:int;
     public var methodCount:int;
 
-    private const methods:Vector.<WeightedMethodToken> = new Vector.<WeightedMethodToken>();
+    private const methods:Vector.<WeightedMethodToken> = makeMethods();
 
-    public function ExampleTheory()
+    private function makeMethods():Vector.<WeightedMethodToken>
     {
-        const a:WeightedMethodToken = makeWeightedMethodToken("a");
-        const b:WeightedMethodToken = makeWeightedMethodToken("b");
-        const c:WeightedMethodToken = makeWeightedMethodToken("c");
-        methods.push(a, b, c);
+        var list:Vector.<WeightedMethodToken> = new Vector.<WeightedMethodToken>();
+        for (var i:int = 0; i < COUNT; i++)
+            list.push(makeWeightedMethodToken("m" + i));
+
+        return list;
     }
 
     private function makeWeightedMethodToken(name:String):WeightedMethodToken

@@ -2,7 +2,6 @@ package alecmce.speedtests.theories.impl
 {
     import alecmce.speedtests.list.linkedlist.Item;
     import alecmce.speedtests.list.linkedlist.LinkedList;
-    import alecmce.speedtests.method.impl.MethodSpeedometer;
     import alecmce.speedtests.util.Progress;
 
     import org.osflash.signals.Signal;
@@ -14,13 +13,9 @@ package alecmce.speedtests.theories.impl
 
         private const list:LinkedList = new LinkedList();
         private const iterator:TheoryIterator = makeIterator();
-        private const methods:MethodSpeedometer = new MethodSpeedometer();
 
         public const result:Signal = iterator.theoryComplete;
         public const progress:Progress = iterator.progress;
-
-        private var current:Item;
-        private var theory:TheoryToken;
 
         private function makeIterator():TheoryIterator
         {
@@ -54,16 +49,14 @@ package alecmce.speedtests.theories.impl
         public function addTheory(token:TheoryToken):TheorySpeedometer
         {
             var item:Item = new Item(token);
-            list.head || (current = item);
             list.append(item);
-            iterator.updateProgressTotal();
+            iterator.reset();
             return this;
         }
 
         public function hasNext():Boolean
         {
             return iterator.hasNext();
-            return current != null;
         }
 
         public function next():void
@@ -79,32 +72,9 @@ package alecmce.speedtests.theories.impl
 
         public function clear():TheorySpeedometer
         {
-            current = null;
             list.clear();
+            iterator.reset();
             return this;
-        }
-
-        private function prepareMethodSpeedometer():void
-        {
-            methods
-                .clear()
-                .setBefore(theory.getBefore())
-                .setMethods(theory.getMethods())
-                .setCount(iterator.methodCount)
-                .reset();
-        }
-
-        private function repeatSpeedo():void
-        {
-            for (var i:int = 0; i < iterator.theoryCount; i++)
-                iterateSpeedo();
-        }
-
-        private function iterateSpeedo():void
-        {
-            methods.reset();
-            while (methods.hasNext())
-                methods.next();
         }
     }
 }

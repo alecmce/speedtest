@@ -1,11 +1,12 @@
 package alecmce.speedtests.theories.eg
 {
+    import alecmce.speedtests.theories.impl.TheorySpeedometer;
+    import alecmce.speedtests.theories.impl.TheoryToken;
+    import alecmce.speedtests.util.Progress;
+
     import flash.display.Sprite;
     import flash.events.Event;
     import flash.text.TextField;
-
-    import alecmce.speedtests.theories.impl.TheorySpeedometer;
-    import alecmce.speedtests.theories.impl.TheoryToken;
 
     public class TheorySpeedoExample extends Sprite
     {
@@ -16,6 +17,8 @@ package alecmce.speedtests.theories.eg
         private const speedo:TheorySpeedometer = makeSpeedometer();
         private const output:TextField = makeTextField();
         private const log:Array = [""];
+
+        public const progress:Progress = speedo.progress;
 
         private function makeTheories():IntHashTheories
         {
@@ -46,9 +49,7 @@ package alecmce.speedtests.theories.eg
             speedo
                 .setTheoryCount(THEORY_ITERATIONS)
                 .setMethodCount(METHOD_ITERATIONS)
-                .addTheory(dictionary)
-                .addTheory(vector)
-                .addTheory(object)
+                .setTheories(new <TheoryToken>[dictionary, vector, object])
                 .result.add(onResult);
 
             return speedo;
@@ -79,12 +80,12 @@ package alecmce.speedtests.theories.eg
 
         private function onEnterFrame(event:Event):void
         {
-            log[log.length - 1] = int(speedo.progress.getProportion() * 10000);
-            output.text = log.join("\n");
-
             speedo.next();
             if (!speedo.hasNext())
                 removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+
+            log[log.length - 1] = int(speedo.progress.getProportion() * 100) + "%";
+            output.text = log.join("\n");
         }
     }
 }
