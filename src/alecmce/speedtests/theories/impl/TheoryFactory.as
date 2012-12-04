@@ -1,13 +1,14 @@
 package alecmce.speedtests.theories.impl
 {
     import alecmce.speedtests.method.impl.MethodToken;
+    import alecmce.speedtests.method.impl.Weight;
     import alecmce.speedtests.theories.api.Theory;
 
     public class TheoryFactory
     {
-        private var before:Function;
         private const methods:Vector.<WeightedMethodToken> = new <WeightedMethodToken>[];
-        private const weights:Vector.<int> = new <int>[];
+        private var before:Function;
+        private var weights:Weights;
 
         public function setBefore(before:Function):TheoryFactory
         {
@@ -15,52 +16,36 @@ package alecmce.speedtests.theories.impl
             return this;
         }
 
-        public function addMethod(name:String, method:Function, weight:int):TheoryFactory
+        public function setWeights(weights:Weights):TheoryFactory
+        {
+            this.weights = weights;
+            return this;
+        }
+
+        public function addMethod(name:String, method:Function):TheoryFactory
         {
             methods.push(makeWeightedMethodToken(name, method));
-            weights.push(weight);
             return this;
         }
 
         private function makeWeightedMethodToken(name:String, method:Function):WeightedMethodToken
         {
             const token:MethodToken = new MethodToken()
-                    .setMethod(method)
-                    .setName(name) as MethodToken;
+                .setMethod(method)
+                .setName(name) as MethodToken;
+
+            const weight:Weight = weights.getWeight(name);
 
             return new WeightedMethodToken()
-                    .setMethod(token);
+                .setMethod(token)
+                .setWeight(weight);
         }
 
         public function make():Theory
         {
-            setProportions();
             const theory:Theory = new TheoryBuilderTheory(before, methods);
-            reset();
-            return theory;
-        }
-
-        private function setProportions():void
-        {
-            const sum:int = sumWeights();
-            const count:int = weights.length;
-            for (var i:int = 0; i < count; i++)
-                methods[i].setProportion(weights[i] / sum);
-        }
-
-        private function sumWeights():int
-        {
-            var count:int = 0;
-            for each (var weight:int in weights)
-                count += weight;
-
-            return count;
-        }
-
-        private function reset():void
-        {
             methods.length = 0;
-            weights.length = 0;
+            return theory;
         }
     }
 }

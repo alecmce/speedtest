@@ -2,16 +2,18 @@ package alecmce.speedtests.theories.eg
 {
     import alecmce.speedtests.theories.api.Theory;
     import alecmce.speedtests.theories.impl.TheoryFactory;
+    import alecmce.speedtests.theories.impl.Weights;
 
     public class IntHashTheories
     {
-        public var weightOfGet:int = 100;
-        public var weightOfSet:int = 100;
-        public var weightOfClear:int = 100;
-        public var weightOfIterateKeys:int = 100;
-        public var weightOfIterateValues:int = 100;
-
         private const factory:TheoryFactory = new TheoryFactory();
+        private var weights:Weights;
+
+        public function setWeights(weights:Weights):IntHashTheories
+        {
+            this.weights = weights;
+            return this;
+        }
 
         public function getDictionaryTheory():Theory
         {
@@ -32,11 +34,12 @@ package alecmce.speedtests.theories.eg
         {
             return factory
                 .setBefore(hash.before)
-                .addMethod("get", hash.get, weightOfGet)
-                .addMethod("set", hash.set, weightOfSet)
-                .addMethod("clear", hash.clear, weightOfClear)
-                .addMethod("iterateKeys", hash.iterateKeys, weightOfIterateKeys)
-                .addMethod("iterateValues", hash.iterateValues, weightOfIterateValues)
+                .setWeights(weights)
+                .addMethod("get", hash.get)
+                .addMethod("set", hash.set)
+                .addMethod("clear", hash.clear)
+                .addMethod("iterateKeys", hash.iterateKeys)
+                .addMethod("iterateValues", hash.iterateValues)
                 .make();
         }
     }

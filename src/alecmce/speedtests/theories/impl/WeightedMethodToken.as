@@ -1,6 +1,7 @@
 package alecmce.speedtests.theories.impl
 {
     import alecmce.speedtests.method.impl.MethodToken;
+    import alecmce.speedtests.method.impl.Weight;
     import alecmce.speedtests.method.impl.WeightedResults;
 
     public class WeightedMethodToken
@@ -8,6 +9,7 @@ package alecmce.speedtests.theories.impl
         private const results:WeightedResults = new WeightedResults();
 
         public var method:MethodToken;
+        private var weight:Weight;
 
         public function setMethod(method:MethodToken):WeightedMethodToken
         {
@@ -16,15 +18,20 @@ package alecmce.speedtests.theories.impl
             return this;
         }
 
-        public function setProportion(proportion:Number):WeightedMethodToken
+        public function setWeight(weight:Weight):WeightedMethodToken
         {
-            results.setProportion(proportion);
+            results.setWeight(weight);
             return this;
         }
 
         public function getResults():WeightedResults
         {
             return results;
+        }
+
+        public function getName():String
+        {
+            return method.name;
         }
 
         public function toString():String
