@@ -7,10 +7,7 @@ package alecmce.speedtests.theories.impl
     {
         private const results:WeightedResults = new WeightedResults();
 
-        public var proportion:Number;
         public var method:MethodToken;
-
-        private var duration:int;
 
         public function setMethod(method:MethodToken):WeightedMethodToken
         {
@@ -21,7 +18,6 @@ package alecmce.speedtests.theories.impl
 
         public function setProportion(proportion:Number):WeightedMethodToken
         {
-            this.proportion = proportion;
             results.setProportion(proportion);
             return this;
         }
@@ -33,9 +29,13 @@ package alecmce.speedtests.theories.impl
 
         public function toString():String
         {
+            const pDuration:String = results.getWeightedTotal().toFixed(2);
+            const proportion:String = results.getProportion().toFixed(2);
+            const duration:String = results.getTotal().toString();
+
             return "{name}: {pDuration} ({duration} @ {proportion})"
                 .replace("{name}", method.name)
-                .replace("{pDuration}", results.getWeightedTotal())
+                .replace("{pDuration}", pDuration)
                 .replace("{duration}", duration)
                 .replace("{proportion}", proportion);
         }

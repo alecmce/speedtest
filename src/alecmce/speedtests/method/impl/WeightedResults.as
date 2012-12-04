@@ -13,6 +13,16 @@ package alecmce.speedtests.method.impl
             return this;
         }
 
+        public function getTotal():int
+        {
+            return results.getTotal();
+        }
+
+        public function getProportion():Number
+        {
+            return proportion;
+        }
+
         public function setProportion(proportion:Number):WeightedResults
         {
             this.proportion = proportion;

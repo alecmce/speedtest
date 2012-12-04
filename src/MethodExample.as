@@ -1,5 +1,5 @@
-package alecmce.speedtests.method.eg
-{
+package {
+    import alecmce.speedtests.method.eg.*;
     import alecmce.speedtests.method.impl.MethodSpeedometer;
     import alecmce.speedtests.method.impl.MethodToken;
     import alecmce.speedtests.util.Progress;
@@ -8,7 +8,8 @@ package alecmce.speedtests.method.eg
     import flash.events.Event;
     import flash.text.TextField;
 
-    public class MethodSpeedoExample extends Sprite
+    [SWF(width="100", height="100", frameRate="60")]
+    public class MethodExample extends Sprite
     {
         private const ITERATIONS:int = 100000;
 

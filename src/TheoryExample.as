@@ -1,24 +1,25 @@
-package alecmce.speedtests.theories.eg
-{
+package {
+    import alecmce.speedtests.theories.eg.*;
     import alecmce.speedtests.theories.impl.TheorySpeedometer;
     import alecmce.speedtests.theories.impl.TheoryToken;
-    import alecmce.speedtests.util.Progress;
+    import alecmce.speedtests.util.Wait;
 
     import flash.display.Sprite;
     import flash.events.Event;
     import flash.text.TextField;
 
-    public class TheorySpeedoExample extends Sprite
+    [SWF(width="640", height="480", frameRate="60")]
+    public class TheoryExample extends Sprite
     {
         private const THEORY_ITERATIONS:int = 100;
         private const METHOD_ITERATIONS:int = 1000;
 
         private const theories:IntHashTheories = makeTheories();
         private const speedo:TheorySpeedometer = makeSpeedometer();
+        private const progress:SpeedoProgress = makeProgress();
         private const output:TextField = makeTextField();
+        private const wait:Wait = new Wait().wait(2000, start);
         private const log:Array = [""];
-
-        public const progress:Progress = speedo.progress;
 
         private function makeTheories():IntHashTheories
         {
@@ -55,6 +56,15 @@ package alecmce.speedtests.theories.eg
             return speedo;
         }
 
+        private function makeProgress():SpeedoProgress
+        {
+            const progress:SpeedoProgress = new SpeedoProgress()
+                .setProgress(speedo.progress);
+
+            addChild(progress);
+            return progress;
+        }
+
         private function makeTextField():TextField
         {
             var output:TextField = new TextField();
@@ -87,5 +97,42 @@ package alecmce.speedtests.theories.eg
             log[log.length - 1] = int(speedo.progress.getProportion() * 100) + "%";
             output.text = log.join("\n");
         }
+    }
+}
+
+import alecmce.speedtests.util.Progress;
+
+import com.bit101.components.ProgressBar;
+
+import flash.display.Sprite;
+import flash.events.Event;
+
+class SpeedoProgress extends Sprite
+{
+    private var progress:Progress;
+
+    private const bar:ProgressBar = makeProgress();
+    private function makeProgress():ProgressBar
+    {
+        const bar:ProgressBar = new ProgressBar();
+        bar.maximum = 1;
+        bar.x = 20;
+        bar.y = 20;
+        bar.width = 600;
+        addChild(bar);
+        return bar;
+    }
+
+    public function setProgress(progress:Progress):SpeedoProgress
+    {
+        progress && removeEventListener(Event.ENTER_FRAME, iterate);
+        this.progress = progress;
+        progress && addEventListener(Event.ENTER_FRAME, iterate);
+        return this;
+    }
+
+    private function iterate(event:Event):void
+    {
+        bar.value = progress.getProportion();
     }
 }

@@ -45,7 +45,7 @@ package alecmce.speedtests.theories.impl
             const sum:int = sumWeights();
             const count:int = weights.length;
             for (var i:int = 0; i < count; i++)
-                methods[i].proportion = weights[i] / sum;
+                methods[i].setProportion(weights[i] / sum);
         }
 
         private function sumWeights():int
